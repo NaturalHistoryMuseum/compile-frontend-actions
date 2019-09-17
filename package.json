@@ -1,24 +1,27 @@
 {
-  "name": "hello-world-javascript-action",
-  "version": "1.0.0",
-  "description": "This action prints \"Hello World\" or \"Hello\" + the name of a person to greet to the log.",
+  "name": "compile-frontend-action",
+  "version": "0.0.1",
+  "description": "This action compiles frontend code (css, js) ready for production.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/hello-world-javascript-action.git"
+    "url": "git+https://github.com/jrdh/compile-frontend-action.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/actions/hello-world-javascript-action/issues"
+    "url": "https://github.com/jrdh/compile-frontend-action/issues"
   },
-  "homepage": "https://github.com/actions/hello-world-javascript-action#readme",
+  "homepage": "https://github.com/jrdh/compile-frontend-action#readme",
   "dependencies": {
     "@actions/core": "^1.1.0",
-    "@actions/github": "^1.1.0"
-  }
+    "@actions/github": "^1.1.0",
+    "less": "3.10.x",
+    "terser": "4.3.x"
+  },
+  "devDependencies": {}
 }
