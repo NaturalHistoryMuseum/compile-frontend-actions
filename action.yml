@@ -1,13 +1,14 @@
-name: 'Hello World'
-description: 'Greet someone and record the time'
+name: 'Compile Frontend'
+description: 'Compile frontend code'
 inputs:
-  who-to-greet:  # id of input
-    description: 'Who to greet'
+  target:
+    description: 'glob target to compile'
     required: true
-    default: 'World'
 outputs:
-  time: # id of output
-    description: 'The time we we greeted you'
+  modified_files:
+    description: 'Number of files modified'
+  commit_sha:
+    description: 'Hash of created commit'
 runs:
   using: 'node12'
   main: 'index.js'
