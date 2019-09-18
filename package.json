@@ -21,7 +21,8 @@
     "@actions/core": "^1.1.0",
     "@actions/github": "^1.1.0",
     "less": "3.10.x",
-    "terser": "4.3.x"
+    "terser": "4.3.x",
+    "glob": "7.1.x"
   },
   "devDependencies": {}
 }
