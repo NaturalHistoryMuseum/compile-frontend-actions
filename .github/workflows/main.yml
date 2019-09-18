@@ -8,3 +8,7 @@ jobs:
       - uses: jrdh/compile-frontend-action/js@master
         with:
           target: '{js,less}/*.js'
+      - uses: jrdh/compile-frontend-action/commit@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          message: 'A test commit'
