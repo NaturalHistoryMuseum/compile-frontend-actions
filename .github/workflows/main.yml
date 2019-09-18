@@ -1,14 +1,10 @@
-name: Test
+name: Test minify js
 on: [push]
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: Run a one-line script
-        run: echo Hello, world!
-      - uses: jrdh/compile-frontend-action@master
+      - uses: jrdh/compile-frontend-action/js@master
         with:
-          target: 'beans/lemons/*'
-          destination: 'beans/lemons/'
-            
+          target: 'js/*'
