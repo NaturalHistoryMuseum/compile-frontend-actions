@@ -28,11 +28,14 @@ try {
 
     // read and then render the javascript source
     let result = terser.minify(fs.readFileSync(filename, 'utf8'), terserOptions);
+    console.log('1');
     if (result.error) {
+      console.log('2');
       throw result.error;
     }
     // figure out the name of the output file simply by replacing the .js with .min.js in the file
     // name
+    console.log('3');
     let destinationFilename = path.basename(filename).replace('.js', '.min.js');
     let outputFile = '';
       if (!destination) {
