@@ -19,4 +19,4 @@ outputs:
     description: 'Hash of created commit'
 runs:
   using: 'node12'
-  main: 'less/index.js'
+  main: 'index.js'
