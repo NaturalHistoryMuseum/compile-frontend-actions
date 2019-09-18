@@ -7,7 +7,7 @@ jobs:
       - uses: actions/checkout@v1
       - name: Run a one-line script
         run: echo Hello, world!
-      - uses: jrdh/compile-frontend-action
+      - uses: jrdh/compile-frontend-action@master
         with:
           target: 'beans/lemons/*'
           destination: 'beans/lemons/'
