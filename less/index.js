@@ -2,7 +2,6 @@ const fs = require('fs');
 const path = require('path');
 
 const core = require('@actions/core');
-const github = require('@actions/github');
 const less = require('less');
 const glob = require('glob');
 

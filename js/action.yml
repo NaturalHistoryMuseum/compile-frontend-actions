@@ -8,15 +8,6 @@ inputs:
     description: 'Location for the minified sources (defaults to target)'
     required: false
     default: ''
-  commit_message:
-    description: 'Commit message to use if there are any modified files to push'
-    required: false
-    default: 'Updated minified js'
-outputs:
-  modified_files:
-    description: 'Number of files modified'
-  commit_sha:
-    description: 'Hash of created commit'
 runs:
   using: 'node12'
   main: 'index.js'
