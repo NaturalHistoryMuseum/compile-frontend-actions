@@ -8,10 +8,6 @@ const octokit = new github.GitHub(token);
 
 console.log(github.context);
 
-// octokit.git.createCommit(
-//     github.context.owner,
-//     github.context.repo,
-//     message,
-//     github.context.repo,
-//     github.context.parents
-// )
+octokit.git.createCommit(
+    message,
+)
