@@ -11,6 +11,8 @@ try {
   const target = core.getInput('target');
   const destination = core.getInput('destination');
 
+  let modifiedFiles = 0;
+
   for (let filename of glob.sync(target)) {
     const lessOptions = {
       // this sets the context for less so it knows where to look for relative imports in the less
@@ -37,10 +39,13 @@ try {
         // write the css out to the output file location
         fs.writeFileSync(outputFile, output.css, {'encoding': 'utf8'});
         console.log(`Compiled ${destinationFilename} -> ${outputFile}`);
+        modifiedFiles++;
       }).catch(err => {
         core.setFailed(err.message);
       });
   }
+
+  core.setOutput('modified_files', modifiedFiles);
 } catch (error) {
   core.setFailed(error.message);
 }

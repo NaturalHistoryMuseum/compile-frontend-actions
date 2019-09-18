@@ -17,6 +17,8 @@ try {
     mangle: true
   };
 
+  let modifiedFiles = 0;
+
   for (let filename of glob.sync(target)) {
     // skip already minified js files
     if (filename.endsWith('.min.js')) {
@@ -47,7 +49,10 @@ try {
       // write the minified js out to the output file location
       fs.writeFileSync(outputFile, result.code, {'encoding': 'utf8'});
       console.log(`Minified ${destinationFilename} -> ${outputFile}`);
+      modifiedFiles++;
   }
+
+  core.setOutput('modified_files', modifiedFiles);
 } catch (error) {
   core.setFailed(error.message);
 }
