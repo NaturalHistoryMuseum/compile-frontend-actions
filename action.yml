@@ -4,6 +4,10 @@ inputs:
   target:
     description: 'glob target to compile'
     required: true
+  destination:
+    description: 'destination location for the compiled source'
+    required: false
+    default: ''
 outputs:
   modified_files:
     description: 'Number of files modified'
