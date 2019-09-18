@@ -20,6 +20,7 @@ try {
   let modifiedFiles = 0;
 
   for (let filename of glob.sync(target)) {
+    console.log(filename);
     // skip already minified js files
     if (filename.endsWith('.min.js')) {
       continue;
