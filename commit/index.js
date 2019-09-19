@@ -20,14 +20,19 @@ const fs = require('fs');
     }
 
     if (modified.length > 0) {
+      const branch = github.context.ref.split('/')[2];
+
+      // checkout the branch
+      await git.checkout({ dir, branch });
+
       // stage all the modified files
       for (const filepath of modified) {
         await git.add({ dir, filepath });
       }
 
       // configure the author (if needed)
-      const name = await git.config({dir, path: 'user.name'});
-      const email = await git.config({dir, path: 'user.email'});
+      const name = await git.config({ dir, path: 'user.name' });
+      const email = await git.config({ dir, path: 'user.email' });
       if (!name || !email) {
         await git.config({ dir, path: 'user.name', value: github.context.actor });
         await git.config({ dir, path: 'user.email', value: `${github.context.actor}@users.noreply.github.com` });
@@ -41,15 +46,16 @@ const fs = require('fs');
       const pushResponse = await git.push({
         dir,
         remote: 'origin',
-        ref: github.context.ref,
-        token: token,
+        ref: branch,
+        username: github.context.actor,
+        password: token
       })
       if (pushResponse.errors) {
         pushResponse.errors.forEach(error => {
           core.setFailed(error);
         });
       } else {
-        console.log(`Successfully pushed commit to ${github.context.ref}`);
+        console.log(`Successfully pushed commit`);
       }
     }
   } catch (err) {
