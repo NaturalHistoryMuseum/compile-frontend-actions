@@ -8,6 +8,13 @@ inputs:
     description: 'Location for the compiled sources (defaults to target)'
     required: false
     default: ''
+  modified:
+    description: 'Array of modified file paths serialised as JSON'
+    required: false
+    default: '[]'
+outputs:
+  modified:
+    description: 'Array of modified file paths serialised as JSON'
 runs:
   using: 'node12'
   main: 'index.js'

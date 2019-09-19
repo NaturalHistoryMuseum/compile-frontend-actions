@@ -7,6 +7,9 @@ inputs:
   message:
     description: 'The commit message to use'
     required: true
+  modified:
+    description: 'Array of modified file paths to commit, serialised as JSON'
+    required: true
 runs:
   using: 'node12'
   main: 'index.js'

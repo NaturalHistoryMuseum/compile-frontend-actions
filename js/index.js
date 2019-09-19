@@ -9,14 +9,19 @@ try {
   // pull out the expected action parameters
   const target = core.getInput('target');
   const destination = core.getInput('destination');
+  let modified = core.getInput('modified');
+
+  try {
+    modified = JSON.parse(modified);
+  } catch (err) {
+    modified = [];
+  }
 
   // setup the terser minification options
   const terserOptions = {
     compress: true,
     mangle: true
   };
-
-  let modifiedFiles = 0;
 
   for (let filename of glob.sync(target)) {
     // skip already minified js files
@@ -48,10 +53,10 @@ try {
     // write the minified js out to the output file location
     fs.writeFileSync(outputFile, result.code, { 'encoding': 'utf8' });
     console.log(`Minified ${destinationFilename} -> ${outputFile}`);
-    modifiedFiles++;
+    modified.push(outputFile);
   }
 
-  core.setOutput('modified_files', modifiedFiles);
+  core.setOutput('modified', JSON.stringify(modified));
 } catch (error) {
   core.setFailed(error.message);
 }
