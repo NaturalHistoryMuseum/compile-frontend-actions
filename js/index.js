@@ -4,6 +4,7 @@ const path = require('path');
 const core = require('@actions/core');
 const terser = require('terser');
 const glob = require('glob');
+const sha1 = require("crypto-js/sha1");
 
 try {
   // pull out the expected action parameters
@@ -55,6 +56,17 @@ try {
       }
     }
 
+    // if the target output file location exists and has the same hash as the minified code we just
+    // generated then we should carry on as there is nothing to do
+    if (fs.existsSync(outputFile)) {
+      const currentHash = sha1(fs.readFileSync(outputFile, 'utf8'));
+      const newHash = sha1(result.code);
+      if (currentHash.toString() === newHash.toString()) {
+        console.log(`Skipping ${path.basename(filename)} as ${outputFile} is already up to date`);
+        continue;
+      }
+    }
+   
     // write the minified js out to the output file location
     fs.writeFileSync(outputFile, result.code, { 'encoding': 'utf8' });
     console.log(`Minified ${path.basename(filename)} -> ${outputFile}`);
