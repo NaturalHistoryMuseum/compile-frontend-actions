@@ -91,3 +91,92 @@ jobs:
         with:
           target: 'src/**/*.less'
 ```
+
+
+## JS Action
+Minifies javascript source files to `.min.js` files using [`terser`](https://www.npmjs.com/package/terser).
+
+## Inputs
+| Name | Description | Required? | Example |
+|---|---|---|---|
+| `target` | Glob target directory or file to minify. Can be a single file, or many files. _Note that existing `.min.js` are always ignored if they are found by the target glob, so you don't have to write some complicated glob that matches `.js` but not `.min.js`._ | Y | `"src/js/**/*.js"` |
+| `destination` | Location for the minified sources (defaults to the same folder as the target file but with a `.min.js` extension instead of `.js`). Can be a directory or a precise file location, though you shouldn't use a precise file location if the target glob matches multiple files. If specifying a directory ensure this value ends with a slash. | N | `"src/js/"` |
+| `modified` | Array of modified file paths serialised as JSON. If this action is being used in a sequence of steps which culminates in a commit step then you can use this input to pass in the current list of modified files. Defaults to [] if no provided. | N | `"[\"src/js/main.min.js\",\"src/js/extra.min.js\"]"` |
+
+## Outputs
+| Name | Description | Example |
+| --- | --- | --- |
+| `modified` | Array of modified file paths serialised as JSON. If chaining a series of steps and then committing the modifications this can be used to pass on the files that this step modified. If an input `modified` value was provided then any files modified by this step will be added to the list, otherwise a new list is started and populated. If no files are modified by this step then the modified value is passed on in the same form as it was at time of input. | `"[\"src/js/main.min.js\",\"src/js/extra.min.js\"]"` |
+
+## Examples
+### Minify a single file using default destination
+_Minifies `src/js/main.js` -> `src/js/main.min.js`_
+```yaml
+name: Minify js
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - uses: jrdh/compile-frontend-action/js@master
+        with:
+          target: 'src/js/main.js'
+```
+
+### Minify a single file into a different directory
+_Minifies `src/js/main.js` -> `src/prod/main.min.js`_
+```yaml
+name: Minify js
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - uses: jrdh/compile-frontend-action/js@master
+        with:
+          target: 'src/js/main.js'
+          destination: 'src/prod/main.min.js'
+```
+
+### Minify a single file into a different directory using default renaming
+_Minifies `src/js/extra.js` -> `src/extras/extra.min.js`_
+```yaml
+name: Minifiy js
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - uses: jrdh/compile-frontend-action/js@master
+        with:
+          target: 'src/js/extra.js'
+          destination: 'src/extras/'
+```
+
+### Minify a set of files using default renaming
+_Minifies `src/**/*.js`_
+
+Example results:
+  - `src/js/main.js` -> `src/js/main.min.js`
+  - `src/extras/extra.js` -> `src/extras/extra.min.js`
+  - `src/utils.js` -> `src/utils.min.js`
+
+```yaml
+name: Compile js
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - uses: jrdh/compile-frontend-action/js@master
+        with:
+          target: 'src/**/*.js'
+```
