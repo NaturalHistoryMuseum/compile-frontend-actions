@@ -9,7 +9,7 @@ inputs:
     required: true
   modified:
     description: 'Array of modified file paths to commit, serialised as JSON'
-    required: false
+    required: true
 runs:
   using: 'node12'
   main: 'index.js'
