@@ -1,0 +1,15 @@
+name: 'Commit changes'
+description: 'Commits changes to the repo created by previous actions'
+inputs:
+  token:
+    description: 'The GitHub authentication token to use'
+    required: true
+  message:
+    description: 'The commit message to use'
+    required: true
+  modified:
+    description: 'Array of modified file paths to commit, serialised as JSON'
+    required: false
+runs:
+  using: 'node12'
+  main: 'index.js'

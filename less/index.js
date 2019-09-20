@@ -2,7 +2,6 @@ const fs = require('fs');
 const path = require('path');
 
 const core = require('@actions/core');
-const github = require('@actions/github');
 const less = require('less');
 const glob = require('glob');
 
@@ -10,8 +9,13 @@ try {
   // pull out the expected action parameters
   const target = core.getInput('target');
   const destination = core.getInput('destination');
+  let modified = core.getInput('modified');
 
-  let modifiedFiles = 0;
+  try {
+    modified = JSON.parse(modified);
+  } catch (err) {
+    modified = [];
+  }
 
   for (let filename of glob.sync(target)) {
     const lessOptions = {
@@ -39,13 +43,13 @@ try {
       // write the css out to the output file location
       fs.writeFileSync(outputFile, output.css, { 'encoding': 'utf8' });
       console.log(`Compiled ${destinationFilename} -> ${outputFile}`);
-      modifiedFiles++;
+      modified.append(outputFile);
     }).catch(err => {
       core.setFailed(err.message);
     });
   }
 
-  core.setOutput('modified_files', modifiedFiles);
+  core.setOutput('modified', JSON.stringify(modified));
 } catch (error) {
   core.setFailed(error.message);
 }

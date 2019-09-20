@@ -8,15 +8,13 @@ inputs:
     description: 'Location for the minified sources (defaults to target)'
     required: false
     default: ''
-  commit_message:
-    description: 'Commit message to use if there are any modified files to push'
+  modified:
+    description: 'Array of modified file paths serialised as JSON'
     required: false
-    default: 'Updated minified js'
+    default: '[]'
 outputs:
-  modified_files:
-    description: 'Number of files modified'
-  commit_sha:
-    description: 'Hash of created commit'
+  modified:
+    description: 'Array of modified file paths serialised as JSON'
 runs:
   using: 'node12'
   main: 'index.js'
