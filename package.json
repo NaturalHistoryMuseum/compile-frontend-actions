@@ -21,10 +21,9 @@
     "@actions/core": "^1.1.0",
     "@actions/github": "^1.1.0",
     "glob": "7.1.x",
-    "isomorphic-git": "^0.67.2",
+    "isomorphic-git": "0.67.x",
     "less": "3.10.x",
-    "terser": "4.3.x",
-    "isomorphic-git": "0.67.x"
+    "terser": "4.3.x"
   },
   "devDependencies": {}
 }
