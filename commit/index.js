@@ -40,7 +40,7 @@ git.plugins.set('fs', fs);
                 console.log(`Staged ${filepath}`);
             }
 
-            files = await git.listFiles({ dir: '/' });
+            files = await git.listFiles({ dir });
             console.log(files);
 
             // configure the author (if needed)
