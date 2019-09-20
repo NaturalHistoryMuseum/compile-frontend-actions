@@ -5,25 +5,27 @@ const core = require('@actions/core');
 const less = require('less');
 const glob = require('glob');
 
-try {
-  // pull out the expected action parameters
-  const target = core.getInput('target');
-  const destination = core.getInput('destination');
-  let modified = core.getInput('modified');
-
+(async () => {
   try {
-    modified = JSON.parse(modified);
-  } catch (err) {
-    modified = [];
-  }
+    // pull out the expected action parameters
+    const target = core.getInput('target');
+    const destination = core.getInput('destination');
+    let modified = core.getInput('modified');
 
-  for (let filename of glob.sync(target)) {
-    const lessOptions = {
-      // this sets the context for less so it knows where to look for relative imports in the less
-      'paths': [path.dirname(filename)]
-    };
-    // read and then render the less source
-    less.render(fs.readFileSync(filename, 'utf8'), lessOptions).then(output => {
+    try {
+      modified = JSON.parse(modified);
+    } catch (err) {
+      modified = [];
+    }
+
+    for (let filename of glob.sync(target)) {
+      const lessOptions = {
+        // this sets the context for less so it knows where to look for relative imports in the less
+        'paths': [path.dirname(filename)]
+      };
+      // read and then render the less source
+      output = await less.render(fs.readFileSync(filename, 'utf8'), lessOptions);
+
       // figure out the name of the output file simply by replacing the .less with .css in the
       // file name
       let destinationFilename = path.basename(filename).replace('.less', '.css');
@@ -40,16 +42,15 @@ try {
           outputFile = path.join(destination, destinationFilename);
         }
       }
+
       // write the css out to the output file location
       fs.writeFileSync(outputFile, output.css, { 'encoding': 'utf8' });
       console.log(`Compiled ${destinationFilename} -> ${outputFile}`);
-      modified.append(outputFile);
-    }).catch(err => {
-      core.setFailed(err.message);
-    });
-  }
+      modified.push(outputFile);
+    }
 
-  core.setOutput('modified', JSON.stringify(modified));
-} catch (error) {
-  core.setFailed(error.message);
-}
+    core.setOutput('modified', JSON.stringify(modified));
+  } catch (error) {
+    core.setFailed(error.message);
+  }
+})();
