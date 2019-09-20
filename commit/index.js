@@ -25,7 +25,10 @@ git.plugins.set('fs', fs);
         if (modified.length === 0) {
             console.log('No changes specificied, nothing to do...');
         } else {
-            const branch = github.context.ref.split('/')[2];
+            // split the ref up and rebuild the branch name, this is probably a bit flakey but it
+            // works during testing
+            let [,,...branch] = github.context.ref.split('/');
+            branch = branch.join('/');
             console.log(`Checking out branch ${branch}`);
 
             // checkout the branch
