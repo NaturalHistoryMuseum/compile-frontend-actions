@@ -26,6 +26,7 @@ git.plugins.set('fs', fs);
             console.log('No changes specificied, nothing to do...');
         } else {
             const branch = github.context.ref.split('/')[2];
+            console.log(`Checking out branch ${branch}`);
 
             // checkout the branch
             await git.checkout({ dir, branch });
