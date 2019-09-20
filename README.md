@@ -180,3 +180,52 @@ jobs:
         with:
           target: 'src/**/*.js'
 ```
+
+
+## Commit Action
+Commits modified files and pushes them back to the branch that triggered the action to run.
+This is provided purely as a convenience as I couldn't find an up-to-date commit and push action in the marketplace.
+
+## Inputs
+| Name | Description | Required? | Example |
+|---|---|---|---|
+| `token` | The GitHub authentication token to use | Y | `"some-long-token-hash-thing"` |
+| `message` | The commit message to use | Y | `"[auto] Frontend update"` |
+| `modified` | Array of modified file paths to commit, serialised as JSON. | Y | `"[\"src/js/main.min.js\",\"src/css/main.css\"]"` |
+
+## Outputs
+n/a
+
+## Example
+### Compile some less and minify some js, then commit it back
+```yaml
+name: Update production frontend code
+on: [push]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      # first, compile the less
+      - uses: jrdh/compile-frontend-action/less@master
+        # give this step an id so that we can reference its outputs in the next step
+        id: less
+        with:
+          target: src/less/main.less
+
+      # next, minify the javascript
+      - uses: jrdh/compile-frontend-action/js@master
+        id: js
+        with:
+          target: src/js/main.js
+          # pass in the modified output of the less step
+          modified: ${{ steps.less.outputs.modified }}
+
+      - uses: jrdh/compile-frontend-action/commit@master
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          message: '[auto] Update frontend production code'
+          # pass in the modified output of the js step
+          modified: ${{ steps.js.outputs.modified }}
+```
