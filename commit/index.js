@@ -37,12 +37,17 @@ git.plugins.set('fs', fs);
             // stage all the modified files
             for (const filepath of modified) {
                 await git.add({ dir, filepath });
+                console.log(`Staged ${filepath}`);
             }
+
+            files = await git.listFiles({ dir: '/' });
+            console.log(files);
 
             // configure the author (if needed)
             const name = await git.config({ dir, path: 'user.name' });
             const email = await git.config({ dir, path: 'user.email' });
             if (!name || !email) {
+                console.log(`Configuring git to use name: ${name} and email: ${email}`);
                 await git.config({
                     dir,
                     path: 'user.name',
