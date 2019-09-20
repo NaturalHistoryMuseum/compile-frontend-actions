@@ -12,8 +12,8 @@ try {
     const destination = core.getInput('destination');
     let modified = core.getInput('modified');
 
-    // modified is expected to be a json serialised list of files that have been modified in the step
-    // chain so far
+    // modified is expected to be a json serialised list of files that have been modified in the
+    // step chain so far
     try {
         modified = JSON.parse(modified);
     } catch (err) {
@@ -39,25 +39,25 @@ try {
             throw result.error;
         }
 
-        // figure out the default name of the output file simply by replacing the .js with .min.js in
-        // the file name
+        // figure out the default name of the output file simply by replacing the .js with .min.js
+        // in the file name
         const defaultFilename = path.basename(filename).replace('.js', '.min.js');
-        // default to write location of the minified js to the destination provided by the caller
+        // default the write location of the minified js to the destination provided by the caller
         let outputFile = destination;
         if (!outputFile) {
-            // no destination specified by the user so we default to the same directory as the
+            // no destination specified by the caller so we default to the same directory as the
             // javascript source was found in
             outputFile = path.join(path.dirname(filename), defaultFilename);
         } else {
-            // if the destination provided by the user ends in a slash, assume they want this path
+            // if the destination provided by the caller ends in a slash, assume they want this path
             // treated as a directory and add the destination .min.js file name we generated above
             if (outputFile.endsWith(path.sep)) {
                 outputFile = path.join(destination, defaultFilename);
             }
         }
 
-        // if the target output file location exists and has the same hash as the minified code we just
-        // generated then we should carry on as there is nothing to do
+        // if the target output file location exists and has the same hash as the minified code we
+        // just generated then we should skip this file as there is nothing to do
         if (fs.existsSync(outputFile)) {
             const currentHash = sha1(fs.readFileSync(outputFile, 'utf8'));
             const newHash = sha1(result.code);

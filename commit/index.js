@@ -3,23 +3,28 @@ const core = require('@actions/core');
 const git = require('isomorphic-git');
 const fs = require('fs');
 
+git.plugins.set('fs', fs);
+
 
 (async () => {
     try {
         const dir = process.cwd();
-        git.plugins.set('fs', fs);
-
         const token = core.getInput('token');
         const message = core.getInput('message');
         let modified = core.getInput('modified');
 
+        // modified is expected to be a json serialised list of files that have been modified in the
+        // step chain so far
         try {
             modified = JSON.parse(modified);
         } catch (err) {
+            // if it was not provided or was crap, default it to []
             modified = [];
         }
 
-        if (modified.length > 0) {
+        if (modified.length === 0) {
+            console.log('No changes specificied, nothing to do...');
+        } else {
             const branch = github.context.ref.split('/')[2];
 
             // checkout the branch
@@ -34,8 +39,16 @@ const fs = require('fs');
             const name = await git.config({ dir, path: 'user.name' });
             const email = await git.config({ dir, path: 'user.email' });
             if (!name || !email) {
-                await git.config({ dir, path: 'user.name', value: github.context.actor });
-                await git.config({ dir, path: 'user.email', value: `${github.context.actor}@users.noreply.github.com` });
+                await git.config({
+                    dir,
+                    path: 'user.name',
+                    value: github.context.actor
+                });
+                await git.config({
+                    dir,
+                    path: 'user.email',
+                    value: `${github.context.actor}@users.noreply.github.com`
+                });
             }
 
             // create the commit
@@ -50,6 +63,7 @@ const fs = require('fs');
                 username: github.context.actor,
                 password: token
             })
+            // report any errors we had during the push
             if (pushResponse.errors) {
                 pushResponse.errors.forEach(error => {
                     core.setFailed(error);
