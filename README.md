@@ -229,3 +229,14 @@ jobs:
           # pass in the modified output of the js step
           modified: ${{ steps.js.outputs.modified }}
 ```
+
+## Local development
+Sometimes you may want to run these actions locally during development and to facilitate this in the `bin/` directory there are bash scripts for the `less` and `js` actions. These take the inputs as parameters, for example:
+
+```bash
+./bin/js.sh "{less,js}/*.js"
+```
+
+will minify the js files found in the `less/` and `js/` directories.
+
+These are provided for convenience :)
