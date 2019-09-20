@@ -32,7 +32,7 @@ git.plugins.set('fs', fs);
             console.log(`Checking out branch ${branch}`);
 
             // checkout the branch
-            await git.checkout({ dir, branch });
+            await git.checkout({ dir, ref: branch });
 
             // stage all the modified files
             for (const filepath of modified) {
