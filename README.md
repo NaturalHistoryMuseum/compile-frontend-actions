@@ -182,22 +182,9 @@ jobs:
 ```
 
 
-## Commit Action
-Commits modified files and pushes them back to the branch that triggered the action to run.
-This is provided purely as a convenience as I couldn't find an up-to-date commit and push action in the marketplace.
+## Putting it all together
+You probably want to commit your changes after running the above actions, here's an example of how to do that:
 
-## Inputs
-| Name | Description | Required? | Example |
-|---|---|---|---|
-| `token` | The GitHub authentication token to use | Y | `"some-long-token-hash-thing"` |
-| `message` | The commit message to use | Y | `"[auto] Frontend update"` |
-| `modified` | Array of modified file paths to commit, serialised as JSON. | Y | `"[\"src/js/main.min.js\",\"src/css/main.css\"]"` |
-
-## Outputs
-n/a
-
-## Example
-### Compile some less and minify some js, then commit it back
 ```yaml
 name: Update production frontend code
 on: [push]
@@ -222,12 +209,18 @@ jobs:
           # pass in the modified output of the less step
           modified: ${{ steps.less.outputs.modified }}
 
-      - uses: NaturalHistoryMuseum/compile-frontend-actions/commit@v1.0.0
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          message: '[auto] Update frontend production code'
-          # pass in the modified output of the js step
-          modified: ${{ steps.js.outputs.modified }}
+      - name: Run git status
+        if: steps.js.outputs.modified != '[]'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MODIFIED: ${{ steps.js.outputs.modified }}
+        run: |
+          git config user.name "Compile action on behalf of $GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git checkout `echo $GITHUB_REF | cut -d'/' -f3-`
+          git add `echo $MODIFIED | jq -r 'join(" ")'`
+          git commit -m "[bot] Update production frontend files"
+          git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git" `echo $GITHUB_REF | cut -d$
 ```
 
 ## Local development
