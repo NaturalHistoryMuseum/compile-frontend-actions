@@ -209,7 +209,7 @@ jobs:
           # pass in the modified output of the less step
           modified: ${{ steps.less.outputs.modified }}
 
-      - name: Run git status
+      - name: Commit and push changes
         if: steps.js.outputs.modified != '[]'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
