@@ -31,7 +31,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - uses: NaturalHistoryMuseum/compile-frontend-actions/less@v1.0.0
+      - uses: NaturalHistoryMuseum/compile-frontend-actions/less@v1.1.0
         with:
           target: 'src/less/main.less'
 ```
@@ -47,7 +47,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - uses: NaturalHistoryMuseum/compile-frontend-actions/less@v1.0.0
+      - uses: NaturalHistoryMuseum/compile-frontend-actions/less@v1.1.0
         with:
           target: 'src/less/main.less'
           destination: 'src/css/main.css'
@@ -64,7 +64,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - uses: NaturalHistoryMuseum/compile-frontend-actions/less@v1.0.0
+      - uses: NaturalHistoryMuseum/compile-frontend-actions/less@v1.1.0
         with:
           target: 'src/less/extra.less'
           destination: 'src/extras/'
@@ -87,7 +87,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - uses: NaturalHistoryMuseum/compile-frontend-actions/less@v1.0.0
+      - uses: NaturalHistoryMuseum/compile-frontend-actions/less@v1.1.0
         with:
           target: 'src/**/*.less'
 ```
@@ -120,7 +120,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - uses: NaturalHistoryMuseum/compile-frontend-actions/js@v1.0.0
+      - uses: NaturalHistoryMuseum/compile-frontend-actions/js@v1.1.0
         with:
           target: 'src/js/main.js'
 ```
@@ -136,7 +136,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - uses: NaturalHistoryMuseum/compile-frontend-actions/js@v1.0.0
+      - uses: NaturalHistoryMuseum/compile-frontend-actions/js@v1.1.0
         with:
           target: 'src/js/main.js'
           destination: 'src/prod/main.min.js'
@@ -153,7 +153,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - uses: NaturalHistoryMuseum/compile-frontend-actions/js@v1.0.0
+      - uses: NaturalHistoryMuseum/compile-frontend-actions/js@v1.1.0
         with:
           target: 'src/js/extra.js'
           destination: 'src/extras/'
@@ -176,7 +176,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - uses: NaturalHistoryMuseum/compile-frontend-actions/js@v1.0.0
+      - uses: NaturalHistoryMuseum/compile-frontend-actions/js@v1.1.0
         with:
           target: 'src/**/*.js'
 ```
@@ -195,14 +195,14 @@ jobs:
       - uses: actions/checkout@v1
 
       # first, compile the less
-      - uses: NaturalHistoryMuseum/compile-frontend-actions/less@v1.0.0
+      - uses: NaturalHistoryMuseum/compile-frontend-actions/less@v1.1.0
         # give this step an id so that we can reference its outputs in the next step
         id: less
         with:
           target: src/less/main.less
 
       # next, minify the javascript
-      - uses: NaturalHistoryMuseum/compile-frontend-actions/js@v1.0.0
+      - uses: NaturalHistoryMuseum/compile-frontend-actions/js@v1.1.0
         id: js
         with:
           target: src/js/main.js
