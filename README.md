@@ -220,7 +220,7 @@ jobs:
           git checkout `echo $GITHUB_REF | cut -d'/' -f3-`
           git add `echo $MODIFIED | jq -r 'join(" ")'`
           git commit -m "[bot] Update production frontend files"
-          git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git" `echo $GITHUB_REF | cut -d$
+          git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git" `echo $GITHUB_REF | cut -d'/' -f3-`
 ```
 
 ## Local development
